@@ -1,0 +1,566 @@
+// English Learning Website — Prisma schema
+// Phase 1 deliverable: schema + generated migration SQL files only.
+// No migration here has been applied to any database yet.
+//
+// Design notes
+// - Provider: PostgreSQL (Supabase). Connection string comes from DATABASE_URL.
+// - Content tables (lessons / questions / prompts) carry NO user relation.
+// - Learner tables (attempts, answers, submissions, assessments, weakness
+//   records) all reference User and cascade on user deletion.
+// - Progress is intentionally NOT stored as a summary table: it is derived by
+//   aggregating the attempt tables ("compute on read from
+//   attempt tables"). This avoids redundant mutable state at demo scale.
+
+generator client {
+  provider        = "prisma-client-js"
+  // One SQL statement per query with nested relations (fewer round trips to the remote pooler).
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Shared enums
+// ---------------------------------------------------------------------------
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+/// Finer level inside a Difficulty: BEGINNER is A1 or A2, INTERMEDIATE is B1, ADVANCED is B2 or C1.
+enum Cefr {
+  A1
+  A2
+  B1
+  B2
+  C1
+}
+
+enum Skill {
+  READING
+  LISTENING
+  WRITING
+  SPEAKING
+}
+
+enum ReadingQuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  FILL_BLANK
+  MAIN_IDEA
+  VOCAB_IN_CONTEXT
+}
+
+enum ListeningQuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  FILL_BLANK
+  MATCHING
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  ASSESSED
+}
+
+// ---------------------------------------------------------------------------
+// User
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+
+  readingAttempts     ReadingAttempt[]
+  listeningAttempts   ListeningAttempt[]
+  writingSubmissions  WritingSubmission[]
+  speakingSubmissions SpeakingSubmission[]
+  speakingRecordings  SpeakingRecording[]
+  conversationSessions ConversationSession[]
+  weaknessRecords     WeaknessRecord[]
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Reading
+// ---------------------------------------------------------------------------
+
+model ReadingLesson {
+  id               String     @id @default(cuid())
+  title            String
+  topic            String
+  difficulty       Difficulty @default(INTERMEDIATE)
+  cefr             Cefr?
+  content          String // the passage itself
+  summary          String?
+  estimatedMinutes Int?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  questions ReadingQuestion[]
+  attempts  ReadingAttempt[]
+
+  @@index([topic, difficulty])
+  @@map("reading_lessons")
+}
+
+model ReadingQuestion {
+  id       String              @id @default(cuid())
+  lessonId String
+  order    Int
+  type     ReadingQuestionType
+  prompt   String
+  /// Choice list for MULTIPLE_CHOICE / MAIN_IDEA / VOCAB_IN_CONTEXT
+  /// (JSON array of strings). Null for TRUE_FALSE / FILL_BLANK.
+  options Json?
+  /// Canonical correct answer as text: option text, "true"/"false",
+  /// or the expected word/phrase for FILL_BLANK.
+  correctAnswer String
+  /// Zero-based index into `options` for choice questions; null otherwise.
+  correctOptionIndex Int?
+  /// Extra accepted spellings/alternatives for FILL_BLANK (JSON array).
+  acceptedAnswers Json?
+  /// Shown to the learner after submission ("why this is the answer").
+  explanation String?
+  points      Int     @default(1)
+
+  lesson  ReadingLesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  answers ReadingAnswer[]
+
+  @@unique([lessonId, order])
+  @@index([lessonId])
+  @@map("reading_questions")
+}
+
+model ReadingAttempt {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  score       Int       @default(0)
+  maxScore    Int       @default(0)
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson  ReadingLesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  answers ReadingAnswer[]
+
+  @@index([userId, completedAt])
+  @@index([lessonId])
+  @@map("reading_attempts")
+}
+
+model ReadingAnswer {
+  id         String   @id @default(cuid())
+  attemptId  String
+  questionId String
+  /// Raw learner response as submitted (option text, "true"/"false", or typed text).
+  response   String?
+  isCorrect  Boolean  @default(false)
+  answeredAt DateTime @default(now())
+
+  attempt  ReadingAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question ReadingQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@index([questionId])
+  @@map("reading_answers")
+}
+
+// ---------------------------------------------------------------------------
+// Listening
+// ---------------------------------------------------------------------------
+
+model ListeningLesson {
+  id              String     @id @default(cuid())
+  title           String
+  topic           String
+  difficulty      Difficulty @default(INTERMEDIATE)
+  cefr            Cefr?
+  /// Audio reference (URL/path in storage bucket).
+  audioUrl        String
+  audioDurationMs Int?
+  transcript      String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  questions ListeningQuestion[]
+  attempts  ListeningAttempt[]
+
+  @@index([topic, difficulty])
+  @@map("listening_lessons")
+}
+
+model ListeningQuestion {
+  id       String                 @id @default(cuid())
+  lessonId String
+  order    Int
+  type     ListeningQuestionType
+  prompt   String
+  /// Choice list for MULTIPLE_CHOICE (JSON array of strings).
+  options Json?
+  /// For MATCHING: JSON array of { left, right } pairs to match up.
+  matchingPairs Json?
+  /// Canonical correct answer: option text, "true"/"false", expected phrase,
+  /// or (for MATCHING) a JSON object of { left: right }.
+  correctAnswer      String
+  correctOptionIndex Int?
+  acceptedAnswers    Json?
+  explanation        String?
+  points             Int     @default(1)
+
+  lesson  ListeningLesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  answers ListeningAnswer[]
+
+  @@unique([lessonId, order])
+  @@index([lessonId])
+  @@map("listening_questions")
+}
+
+model ListeningAttempt {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  score       Int       @default(0)
+  maxScore    Int       @default(0)
+
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson  ListeningLesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  answers ListeningAnswer[]
+
+  @@index([userId, completedAt])
+  @@index([lessonId])
+  @@map("listening_attempts")
+}
+
+model ListeningAnswer {
+  id         String   @id @default(cuid())
+  attemptId  String
+  questionId String
+  response   String?
+  isCorrect  Boolean  @default(false)
+  answeredAt DateTime @default(now())
+
+  attempt  ListeningAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question ListeningQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@index([questionId])
+  @@map("listening_answers")
+}
+
+// ---------------------------------------------------------------------------
+// Writing
+// ---------------------------------------------------------------------------
+
+model WritingPrompt {
+  id          String     @id @default(cuid())
+  title       String
+  promptText  String
+  topic       String?
+  difficulty  Difficulty @default(INTERMEDIATE)
+  cefr        Cefr?
+  minWords    Int?
+  maxWords    Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  submissions WritingSubmission[]
+
+  @@index([topic, difficulty])
+  @@map("writing_prompts")
+}
+
+model WritingSubmission {
+  id        String           @id @default(cuid())
+  userId    String
+  promptId  String
+  /// Learner's in-progress draft (kept so drafts survive page reloads).
+  draftText String?
+  /// Text submitted for assessment.
+  finalText String?
+  wordCount Int              @default(0)
+  status    SubmissionStatus @default(DRAFT)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  submittedAt DateTime?
+
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prompt     WritingPrompt      @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  assessment WritingAssessment?
+
+  @@index([userId, createdAt])
+  @@index([promptId])
+  @@map("writing_submissions")
+}
+
+model WritingAssessment {
+  id                String  @id @default(cuid())
+  submissionId      String  @unique
+  /// Per-criterion scores on a 0-100 rubric scale.
+  grammarScore      Float
+  vocabularyScore   Float
+  coherenceScore    Float
+  taskAchievementScore Float
+  overallScore      Float?
+  /// Structured corrections: JSON array of
+  /// { original, corrected, errorType, explanation }
+  corrections       Json
+  /// Improvement suggestions: JSON array of strings.
+  suggestions       Json
+  /// One or two sentences of overall feedback from the model.
+  summary           String?
+  /// AI provider/model identifier that produced this assessment (audit trail).
+  model             String?
+  assessedAt        DateTime @default(now())
+
+  submission WritingSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@map("writing_assessments")
+}
+
+// ---------------------------------------------------------------------------
+// Speaking
+// ---------------------------------------------------------------------------
+
+model SpeakingPrompt {
+  id               String     @id @default(cuid())
+  title            String
+  promptText       String
+  topic            String?
+  difficulty       Difficulty @default(INTERMEDIATE)
+  cefr             Cefr?
+  preparationSeconds Int?
+  speakingSeconds  Int?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  submissions SpeakingSubmission[]
+
+  @@index([topic, difficulty])
+  @@map("speaking_prompts")
+}
+
+model SpeakingSubmission {
+  id         String           @id @default(cuid())
+  userId     String
+  promptId   String
+  /// Path of the stored recording (`/api/speaking/recordings/<id>`), or null when none is kept.
+  audioUrl   String?
+  audioDurationMs Int?
+  /// Speech-to-text output exactly as produced by the STT API.
+  rawTranscript       String?
+  /// Transcript the learner reviewed/edited and confirmed before assessment.
+  confirmedTranscript String?
+  status     SubmissionStatus @default(DRAFT)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  submittedAt DateTime?
+
+  user       User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prompt     SpeakingPrompt      @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  assessment SpeakingAssessment?
+  recording  SpeakingRecording?
+
+  @@index([userId, createdAt])
+  @@index([promptId])
+  @@map("speaking_submissions")
+}
+
+/// The learner's own recording for one Speaking submission (T-029).
+/// Kept in the database rather than a storage bucket so the site needs no
+/// extra service; the application caps the size and the number per learner.
+/// Never select `data` except to play the recording back to its owner.
+model SpeakingRecording {
+  id           String   @id @default(cuid())
+  submissionId String   @unique
+  userId       String
+  /// audio/webm, audio/ogg or audio/mp4, as detected from the bytes.
+  mime         String
+  sizeBytes    Int
+  durationMs   Int
+  data         Bytes
+  createdAt    DateTime @default(now())
+
+  submission SpeakingSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("speaking_recordings")
+}
+
+model SpeakingAssessment {
+  id             String @id @default(cuid())
+  submissionId   String @unique
+  /// Per-criterion scores on a 0-100 rubric scale.
+  grammarScore   Float
+  vocabularyScore Float
+  coherenceScore Float
+  topicRelevanceScore Float
+  overallScore   Float?
+  /// Structured corrections: JSON array of
+  /// { original, corrected, errorType, explanation }
+  corrections    Json
+  /// Improvement suggestions: JSON array of strings.
+  suggestions    Json
+  /// One or two sentences of overall feedback from the model.
+  summary        String?
+  model          String?
+  assessedAt     DateTime @default(now())
+
+  submission SpeakingSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@map("speaking_assessments")
+}
+
+// ---------------------------------------------------------------------------
+// Weakness tracking (per user, per skill, per category)
+// `category` is a free-form string so it can hold a question type
+// ("VOCAB_IN_CONTEXT"), a vocabulary item ("subjunctive"), or a writing error
+// type ("article_usage") without further migrations.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// AI / STT spend ledger (append-only)
+// ---------------------------------------------------------------------------
+
+enum AiUsageKind {
+  ASSESSMENT
+  STT
+  /// Chat replies and the closing assessment of a conversation with AI.
+  CONVERSATION
+  /// Speech to text for conversation turns, counted apart from Speaking practice.
+  CONVERSATION_STT
+}
+
+/// One row per reservation or settlement. `userId` and `submissionId` are plain
+/// columns without foreign keys on purpose: spend history must survive the
+/// deletion of a user or submission.
+model AiUsage {
+  id               String      @id @default(cuid())
+  kind             AiUsageKind
+  /// reserved | reconciled | failed | completed
+  status           String
+  userId           String?
+  submissionId     String?
+  model            String?
+  promptTokens     Int         @default(0)
+  completionTokens Int         @default(0)
+  audioSeconds     Float?
+  costUsd          Float
+  createdAt        DateTime    @default(now())
+
+  @@index([kind, createdAt])
+  @@index([submissionId, createdAt])
+  @@index([userId, kind, createdAt])
+  @@map("ai_usage")
+}
+
+model WeaknessRecord {
+  id              String   @id @default(cuid())
+  userId          String
+  skill           Skill
+  category        String
+  occurrenceCount Int      @default(1)
+  firstSeenAt     DateTime @default(now())
+  lastSeenAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skill, category])
+  @@index([userId, skill])
+  @@map("weakness_records")
+}
+
+// ---------------------------------------------------------------------------
+// Conversation with AI (T-031). A turn-based spoken dialogue in a scenario
+// from the code catalogue (src/lib/conversation/scenarios.ts). Only text is
+// kept: the audio of a turn goes to the speech provider and is not stored.
+// ---------------------------------------------------------------------------
+
+enum ConversationStatus {
+  ACTIVE
+  ENDED
+  ABANDONED
+}
+
+enum ConversationRole {
+  LEARNER
+  PARTNER
+}
+
+model ConversationSession {
+  id         String             @id @default(cuid())
+  userId     String
+  /// Id of an entry in the scenario catalogue (not a database row).
+  scenarioId String
+  status     ConversationStatus @default(ACTIVE)
+  /// Number of learner turns stored so far.
+  turnCount  Int                @default(0)
+  startedAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  endedAt    DateTime?
+
+  user       User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  turns      ConversationTurn[]
+  assessment ConversationAssessment?
+
+  @@index([userId, startedAt])
+  @@map("conversation_sessions")
+}
+
+model ConversationTurn {
+  id        String           @id @default(cuid())
+  sessionId String
+  /// Position in the dialogue, starting at 0 with the partner's opening line.
+  index     Int
+  role      ConversationRole
+  text      String
+  /// Length of the learner's recording; null for the partner.
+  audioDurationMs Int?
+  createdAt DateTime         @default(now())
+
+  session ConversationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  /// Two requests can never both write the same position.
+  @@unique([sessionId, index])
+  @@map("conversation_turns")
+}
+
+model ConversationAssessment {
+  id        String @id @default(cuid())
+  sessionId String @unique
+  /// Per-criterion scores on a 0-100 rubric scale, as for Speaking.
+  grammarScore        Float
+  vocabularyScore     Float
+  coherenceScore      Float
+  topicRelevanceScore Float
+  overallScore        Float?
+  /// JSON array of { original, corrected, errorType, explanation }.
+  corrections Json
+  /// JSON array of strings.
+  suggestions Json
+  /// JSON array of indexes into the scenario's goals that the learner reached.
+  goalsReached Json
+  summary    String?
+  model      String?
+  assessedAt DateTime @default(now())
+
+  session ConversationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("conversation_assessments")
+}

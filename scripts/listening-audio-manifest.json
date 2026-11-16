@@ -1,0 +1,402 @@
+{
+  "seed-listening-1": {
+    "durationMs": 32155,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 479,
+    "bytes": 193248
+  },
+  "seed-listening-2": {
+    "durationMs": 34060,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 557,
+    "bytes": 204768
+  },
+  "seed-listening-3": {
+    "durationMs": 74065,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 984,
+    "bytes": 444816
+  },
+  "seed-listening-4": {
+    "durationMs": 76720,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1156,
+    "bytes": 460656
+  },
+  "seed-listening-5": {
+    "durationMs": 87475,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1288,
+    "bytes": 525168
+  },
+  "seed-listening-6": {
+    "durationMs": 74970,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1247,
+    "bytes": 450144
+  },
+  "seed-listening-7": {
+    "durationMs": 53990,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 839,
+    "bytes": 324288
+  },
+  "seed-listening-8": {
+    "durationMs": 88865,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 883,
+    "bytes": 533520
+  },
+  "seed-listening-9": {
+    "durationMs": 54765,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 983,
+    "bytes": 328896
+  },
+  "seed-listening-10": {
+    "durationMs": 61240,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1011,
+    "bytes": 367776
+  },
+  "seed-listening-11": {
+    "durationMs": 78295,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1253,
+    "bytes": 470160
+  },
+  "seed-listening-12": {
+    "durationMs": 81995,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1260,
+    "bytes": 492336
+  },
+  "seed-listening-13": {
+    "durationMs": 65115,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 930,
+    "bytes": 391104
+  },
+  "seed-listening-14": {
+    "durationMs": 55565,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 892,
+    "bytes": 333792
+  },
+  "seed-listening-15": {
+    "durationMs": 63585,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 880,
+    "bytes": 381888
+  },
+  "seed-listening-16": {
+    "durationMs": 62165,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 883,
+    "bytes": 373392
+  },
+  "seed-listening-17": {
+    "durationMs": 70415,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1069,
+    "bytes": 422784
+  },
+  "seed-listening-18": {
+    "durationMs": 59065,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1029,
+    "bytes": 354816
+  },
+  "seed-listening-19": {
+    "durationMs": 67015,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1075,
+    "bytes": 402480
+  },
+  "seed-listening-20": {
+    "durationMs": 105695,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1087,
+    "bytes": 634464
+  },
+  "seed-listening-21": {
+    "durationMs": 73445,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1299,
+    "bytes": 441072
+  },
+  "seed-listening-22": {
+    "durationMs": 75220,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1201,
+    "bytes": 451728
+  },
+  "seed-listening-23": {
+    "durationMs": 83050,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1313,
+    "bytes": 498672
+  },
+  "seed-listening-24": {
+    "durationMs": 88925,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1382,
+    "bytes": 533952
+  },
+  "seed-listening-25": {
+    "durationMs": 40980,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 562,
+    "bytes": 246240
+  },
+  "seed-listening-26": {
+    "durationMs": 33355,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 503,
+    "bytes": 200448
+  },
+  "seed-listening-27": {
+    "durationMs": 63110,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 848,
+    "bytes": 379008
+  },
+  "seed-listening-28": {
+    "durationMs": 56135,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 837,
+    "bytes": 337104
+  },
+  "seed-listening-29": {
+    "durationMs": 79145,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1172,
+    "bytes": 475200
+  },
+  "seed-listening-30": {
+    "durationMs": 69570,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1201,
+    "bytes": 417744
+  },
+  "seed-listening-31": {
+    "durationMs": 106680,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1653,
+    "bytes": 640368
+  },
+  "seed-listening-32": {
+    "durationMs": 160880,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1643,
+    "bytes": 965664
+  },
+  "seed-listening-33": {
+    "durationMs": 111065,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1879,
+    "bytes": 666720
+  },
+  "seed-listening-34": {
+    "durationMs": 37810,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 560,
+    "bytes": 227232
+  },
+  "seed-listening-35": {
+    "durationMs": 38830,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 578,
+    "bytes": 233280
+  },
+  "seed-listening-36": {
+    "durationMs": 56415,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 872,
+    "bytes": 338832
+  },
+  "seed-listening-37": {
+    "durationMs": 58465,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 827,
+    "bytes": 351216
+  },
+  "seed-listening-38": {
+    "durationMs": 69770,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1183,
+    "bytes": 419040
+  },
+  "seed-listening-39": {
+    "durationMs": 83195,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1184,
+    "bytes": 499536
+  },
+  "seed-listening-40": {
+    "durationMs": 107480,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1597,
+    "bytes": 645264
+  },
+  "seed-listening-41": {
+    "durationMs": 113785,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1680,
+    "bytes": 683136
+  },
+  "seed-listening-42": {
+    "durationMs": 113185,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1834,
+    "bytes": 679536
+  },
+  "seed-listening-43": {
+    "durationMs": 35130,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 520,
+    "bytes": 211104
+  },
+  "seed-listening-44": {
+    "durationMs": 61405,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 565,
+    "bytes": 368784
+  },
+  "seed-listening-45": {
+    "durationMs": 49665,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 869,
+    "bytes": 298368
+  },
+  "seed-listening-46": {
+    "durationMs": 60315,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 968,
+    "bytes": 362304
+  },
+  "seed-listening-47": {
+    "durationMs": 73445,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1192,
+    "bytes": 441072
+  },
+  "seed-listening-48": {
+    "durationMs": 73295,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1169,
+    "bytes": 440064
+  },
+  "seed-listening-49": {
+    "durationMs": 112530,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1628,
+    "bytes": 675504
+  },
+  "seed-listening-50": {
+    "durationMs": 111610,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1825,
+    "bytes": 670032
+  }
+}

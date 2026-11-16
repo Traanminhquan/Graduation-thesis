@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens: a marked-up page.
+ *   canvas / surface   cool paper and the white sheet that holds the work
+ *   ink                blue-black fountain-pen ink, used for text and primary actions
+ *   marker             highlighter yellow, the one signature colour: active nav,
+ *                      selected answers, links
+ *   pen                the teacher's red pen, reserved for mistakes
+ *   tick               the green tick, reserved for correct work
+ * Every colour in the UI comes from this list, so nothing here should be added
+ * for decoration.
+ */
+@theme {
+  --color-canvas: #f4f5f8;
+  --color-surface: #ffffff;
+  --color-ink: #141f38;
+  --color-ink-soft: #3b4761;
+  --color-ink-muted: #586480;
+  --color-line: #e0e3ea;
+  --color-line-strong: #bfc5d2;
+
+  --color-marker: #ffe45e;
+  --color-marker-soft: #fff5bf;
+
+  --color-pen: #b92c18;
+  --color-pen-soft: #fcebe7;
+  --color-tick: #0f6b46;
+  --color-tick-soft: #e3f2eb;
+  --color-caution: #7f5000;
+  --color-caution-soft: #fbf0d9;
+}
+
+/* Fonts are injected as CSS variables by next/font in the root layout. */
+@theme inline {
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-serif), Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-marker);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.001ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* The highlighter stroke behind a word. */
+  .marked {
+    background-image: linear-gradient(var(--color-marker), var(--color-marker));
+    background-repeat: no-repeat;
+    background-position: 0 88%;
+    background-size: 100% 42%;
+  }
+
+  /* Loading placeholder: ruled lines, anchored to the bottom so even a short
+     block shows one. Nothing moves. */
+  .ruled {
+    background-image: linear-gradient(
+      to bottom,
+      transparent calc(100% - 1px),
+      var(--color-line-strong) calc(100% - 1px)
+    );
+    background-size: 100% 1.75rem;
+    background-position: left bottom;
+    background-repeat: repeat-y;
+  }
+
+  /* Home page specimen: the correction is drawn once, on load. */
+  .proof-del {
+    position: relative;
+    color: var(--color-ink-muted);
+    text-decoration: none;
+  }
+  .proof-del::after {
+    content: "";
+    position: absolute;
+    left: -0.08em;
+    right: -0.08em;
+    top: 56%;
+    height: 0.075em;
+    border-radius: 999px;
+    background: var(--color-pen);
+    transform: rotate(-3deg);
+    transform-origin: left center;
+    animation: proof-strike 420ms 450ms cubic-bezier(0.6, 0, 0.2, 1) both;
+  }
+  .proof-ins {
+    color: var(--color-pen);
+    text-decoration: none;
+    background-image: linear-gradient(var(--color-marker), var(--color-marker));
+    background-repeat: no-repeat;
+    background-position: 0 88%;
+    background-size: 100% 42%;
+    animation: proof-mark 480ms 860ms cubic-bezier(0.6, 0, 0.2, 1) both;
+  }
+
+  /* The mark on a result page: a red-pen score, ringed in one stroke. */
+  .pen-mark {
+    position: relative;
+    display: inline-block;
+    padding: 0.9rem 1.6rem 1rem 1.4rem;
+    color: var(--color-pen);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    transform: rotate(-4deg);
+  }
+  .pen-mark-score {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    font-variant-numeric: lining-nums;
+  }
+  .pen-mark-value {
+    font-size: 3.5rem;
+    letter-spacing: -0.02em;
+  }
+  .pen-mark-out-of {
+    margin-left: 0.1em;
+    font-size: 1.75rem;
+  }
+  .pen-mark-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .pen-mark-ring path {
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    /* Longer than the ring at any size, so one dash covers the whole stroke. */
+    stroke-dasharray: 1400;
+    animation: pen-ring 900ms 250ms cubic-bezier(0.3, 0, 0.3, 1) both;
+  }
+
+  @keyframes pen-ring {
+    from {
+      stroke-dashoffset: 1400;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes proof-strike {
+    from {
+      transform: rotate(-3deg) scaleX(0);
+    }
+    to {
+      transform: rotate(-3deg) scaleX(1);
+    }
+  }
+  @keyframes proof-mark {
+    from {
+      background-size: 0% 42%;
+      color: transparent;
+    }
+    35% {
+      color: var(--color-pen);
+    }
+    to {
+      background-size: 100% 42%;
+    }
+  }
+}
