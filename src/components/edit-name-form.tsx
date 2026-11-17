@@ -46,7 +46,7 @@ export function EditNameForm({ name }: { name: string | null }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="min-w-0 space-y-4" noValidate>
+    <form method="post" onSubmit={handleSubmit} className="min-w-0 space-y-4" noValidate>
       <div className="min-w-0">
         {/* The section heading already says t.name; the label is for assistive technology. */}
         <label htmlFor="profile-name" className="sr-only">{t.name}</label>

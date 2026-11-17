@@ -79,7 +79,7 @@ export function RegisterForm() {
   const submitting = state.status === "submitting";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+    <form method="post" onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div>
         <label htmlFor="name" className="text-sm font-semibold text-ink">
           {t.name}

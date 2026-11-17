@@ -75,7 +75,7 @@ export function LoginForm() {
   const submitting = state.status === "submitting";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+    <form method="post" onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div>
         <label htmlFor="email" className="text-sm font-semibold text-ink">
           {t.email}

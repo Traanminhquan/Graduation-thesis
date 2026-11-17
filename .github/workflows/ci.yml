@@ -23,9 +23,15 @@ jobs:
       - run: npm run build
 
   # Browser tests against a throwaway Postgres in the runner (never Supabase).
-  # Uses the Google Chrome already installed on ubuntu-latest: no browser download.
+  # "chrome" uses the Google Chrome already installed on ubuntu-latest and also
+  # runs at a 390 px phone width; Firefox and WebKit (Safari's engine) are
+  # downloaded by Playwright with their system dependencies.
   e2e:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: ["chrome,chrome-390", firefox, webkit]
     services:
       postgres:
         image: postgres:16
@@ -50,10 +56,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx prisma generate
+      - if: matrix.browser == 'firefox' || matrix.browser == 'webkit'
+        run: npx playwright install --with-deps ${{ matrix.browser }}
       - run: npm run test:e2e
+        env:
+          E2E_BROWSERS: ${{ matrix.browser }}
       - if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-traces
+          name: playwright-traces-${{ strategy.job-index }}
           path: test-results/
           retention-days: 7

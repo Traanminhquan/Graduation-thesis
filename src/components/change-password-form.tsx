@@ -43,7 +43,7 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="min-w-0 space-y-4" noValidate>
+    <form method="post" onSubmit={handleSubmit} className="min-w-0 space-y-4" noValidate>
       {(["currentPassword", "newPassword"] as const).map((name) => (
         <div key={name} className="min-w-0">
           <label htmlFor={name} className="text-sm font-semibold text-ink">
