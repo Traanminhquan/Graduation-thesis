@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Literata, Schibsted_Grotesk } from "next/font/google";
+import { Be_Vietnam_Pro, Literata } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { LocaleProvider } from "@/i18n/client";
@@ -9,16 +9,19 @@ import { getLocale } from "@/i18n/server";
 import { site } from "@/lib/site";
 import "../globals.css";
 
+// Both families carry a Vietnamese subset, so accented letters (ạ, ế, ộ, ữ ...)
+// never fall back to a system font in the middle of a word.
 const serif = Literata({
   variable: "--font-serif",
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin", "latin-ext", "vietnamese"],
   style: ["normal", "italic"],
   axes: ["opsz"],
 });
 
-const ui = Schibsted_Grotesk({
+const ui = Be_Vietnam_Pro({
   variable: "--font-ui",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["400", "500", "600", "700"],
 });
 
 /** Both interface languages are prerendered; `next.config.ts` picks one per request. */

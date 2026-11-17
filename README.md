@@ -77,4 +77,4 @@ src/lib/           data access and rules per skill, ai/ (provider, cost ledger),
 
 ## Design
 
-The interface is a marked-up page: blue-black ink for text, highlighter yellow for what is selected or linked, and the teacher's red pen for mistakes and marks. Literata is used for anything read or written by the learner, Schibsted Grotesk for the interface. The tokens and their rules are at the top of `src/app/globals.css`.
+The interface is a marked-up page: blue-black ink for text, highlighter yellow for what is selected or linked, and the teacher's red pen for mistakes and marks. Literata is used for anything read or written by the learner, Be Vietnam Pro for the interface (both fonts include the Vietnamese subset). The tokens and their rules are at the top of `src/app/globals.css`.
