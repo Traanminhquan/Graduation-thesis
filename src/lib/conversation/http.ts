@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 
-import { checkSameOrigin } from "../speaking/stt/http";
+import { checkSameOrigin } from "../http/same-origin";
 
 import { conversationConfig } from "./config";
 import type { TurnDeps, TurnEvent, TurnInput } from "./turn";

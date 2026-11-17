@@ -64,10 +64,10 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
   const { promptId, submissionId } = await params;
   const query = await searchParams;
   const failureMessage = query.ai === "limit"
-    ? t.youHaveReachedTodaySAIFeedbackLimitYourWorkIsSavedSoYouCanTryAgainTomorrow
+    ? t.dailyLimit
     : query.ai === "busy"
-      ? t.theAIServiceIsBusyOrTookTooLongYourWorkIsSavedSoYouCanTryAgainInAMoment
-      : query.ai === "unavailable" ? t.theAssessmentCouldNotBeCompletedYourResponseIsSavedSoYouCanTryAgain : null;
+      ? t.aiBusy
+      : query.ai === "unavailable" ? t.assessmentFailed : null;
   const user = await requireUser();
 
   // Scoped to the signed-in user: another learner's submission id resolves to
@@ -127,7 +127,7 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
               </p>
             ) : (
               <p className="text-base leading-7 text-ink-soft">
-                {t.getScoresAndCorrectionsForThisResponse}
+                {t.feedbackDescription}
       </p>
             )}
             <form action={requestAssessment.bind(null, promptId, submissionId)} className="mt-3">
@@ -138,7 +138,7 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
           </div>
         ) : (
           <p className="mt-2 text-base leading-7 text-ink-soft">
-            {t.aIFeedbackIsTurnedOffForThisSiteYourResponseIsSavedAndTheBasicCheckBelowIsAvailable}
+            {t.feedbackDisabled}
       </p>
         )}
       </section>
@@ -154,7 +154,7 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
             </p>
           ) : (
             <p className="text-base text-ink-muted">
-              {t.noTextWasStoredForThisSubmission}
+              {t.noSubmissionText}
       </p>
           )}
         </TextSheet>

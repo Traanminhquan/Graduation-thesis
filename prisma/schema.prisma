@@ -381,7 +381,7 @@ model SpeakingSubmission {
   @@map("speaking_submissions")
 }
 
-/// The learner's own recording for one Speaking submission (T-029).
+/// The learner's own recording for one Speaking submission.
 /// Kept in the database rather than a storage bucket so the site needs no
 /// extra service; the application caps the size and the number per learner.
 /// Never select `data` except to play the recording back to its owner.
@@ -487,7 +487,7 @@ model WeaknessRecord {
 }
 
 // ---------------------------------------------------------------------------
-// Conversation with AI (T-031). A turn-based spoken dialogue in a scenario
+// Conversation with AI. A turn-based spoken dialogue in a scenario
 // from the code catalogue (src/lib/conversation/scenarios.ts). Only text is
 // kept: the audio of a turn goes to the speech provider and is not stored.
 // ---------------------------------------------------------------------------

@@ -7,6 +7,7 @@ import { speakingMessages } from "@/i18n/messages/speaking";
 
 import { redirect } from "next/navigation";
 
+import { authRateLimiter, SUBMISSION_RULE, limitMessage } from "@/lib/auth/rate-limit";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { confirmSpeakingForUser, submitSpeakingForUser } from "@/lib/speaking/submit";
 
@@ -16,7 +17,11 @@ export async function confirmSpeakingTranscript(promptId: string, text: string):
   const t = await getRequestMessages(speakingMessages);
   const user = await getCurrentUser();
   if (!user) return { error: t.pleaseSignInAgain };
-  const result = await confirmSpeakingForUser(user.id, promptId, text, undefined, process.env, await getRequestLocale());
+
+  const locale = await getRequestLocale();
+  const decision = authRateLimiter.consume(`submission:speaking:${user.id}`, SUBMISSION_RULE);
+  if (!decision.ok) return { error: limitMessage(decision, locale) };
+  const result = await confirmSpeakingForUser(user.id, promptId, text, undefined, process.env, locale);
   if (!result.ok) return { error: result.message };
   redirect(`/speaking/${promptId}/result/${result.submissionId}`);
 }
@@ -30,8 +35,12 @@ export async function submitSpeakingResponse(
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
+  const locale = await getRequestLocale();
+  const decision = authRateLimiter.consume(`submission:speaking:${user.id}`, SUBMISSION_RULE);
+  if (!decision.ok) return { error: limitMessage(decision, locale) };
+
   const result = await submitSpeakingForUser({
-    locale: await getRequestLocale(),
+    locale,
     userId: user.id,
     promptId,
     durationMs: formData.get("durationMs"),

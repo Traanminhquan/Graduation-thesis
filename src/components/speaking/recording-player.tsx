@@ -28,7 +28,7 @@ export function RecordingPlayer({ src, durationLabel }: { src: string; durationL
     <button type="button" className={linkInline} disabled={busy} onClick={() => confirming ? void remove() : setConfirming(true)}>{confirming ? t.deletePermanently : t.deleteRecording}</button>
     {confirming ? <button type="button" className={buttonSecondary} disabled={busy} onClick={() => { setConfirming(false); setError(false); }}>{t.keep}</button> : null}
     </div>
-    {error ? <p role="alert" className={`${alertError} mt-3`}>{t.couldNotDeleteTheRecording}
+    {error ? <p role="alert" className={`${alertError} mt-3`}>{t.deleteFailed}
       </p> : null}
   </>;
 }

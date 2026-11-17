@@ -41,7 +41,15 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   poweredByHeader: false,
   headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Lesson recordings keep their file name when regenerated, so cache for a
+      // day (not forever) and let the browser refresh in the background after that.
+      {
+        source: "/audio/listening/:file*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
+      },
+    ];
   },
   /**
    * Interface language. Pages live under `app/[lang]`; the visible URL never

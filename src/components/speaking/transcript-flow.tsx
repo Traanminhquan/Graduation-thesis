@@ -10,23 +10,23 @@ import { buttonPrimary, buttonSecondary, field, readingText } from "@/lib/ui";
 export function TranscriptFlow({ promptId, audio, durationMs, sttEnabled, audioStorageEnabled, initialTranscript, onBusyChange, onReady }: { promptId: string; audio: Blob | null; durationMs: number; sttEnabled: boolean; audioStorageEnabled: boolean; initialTranscript: string | null; onBusyChange: (busy: boolean) => void; onReady: () => void }) {
   const t = useMessages(speakingMessages);
 const REASONS: Record<string, string> = {
-  provider_error: t.theSpeechServiceIsUnavailableRightNow,
-  invalid_response: t.theSpeechServiceIsUnavailableRightNow,
-  unavailable: t.theSpeechServiceIsUnavailableRightNow,
-  configuration: t.speechToTextIsNotSetUpOnThisSite,
-  request_budget: t.theTranscriptionBudgetHasBeenReached,
-  pilot_budget: t.theTranscriptionBudgetHasBeenReached,
+  provider_error: t.speechUnavailable,
+  invalid_response: t.speechUnavailable,
+  unavailable: t.speechUnavailable,
+  configuration: t.speechNotConfigured,
+  request_budget: t.transcriptionBudgetLimit,
+  pilot_budget: t.transcriptionBudgetLimit,
   unauthenticated: t.pleaseSignInAgain,
-  origin: t.thisRequestWasBlockedReloadThePageAndTryAgain,
-  disabled: t.speechToTextIsNotAvailableRightNow,
-  daily_cap: t.youHaveReachedTodaySTranscriptionLimit,
-  no_speech: t.noSpeechWasDetectedInThisRecording,
-  invalid_audio: t.thisRecordingFormatIsNotSupported,
-  duration_unverifiable: t.theRecordingLengthCouldNotBeVerified,
-  invalid_duration: t.theRecordingLengthIsNotAllowed,
-  too_large: t.theRecordingIsTooLarge,
-  rate_limited: t.theSpeechServiceIsBusyPleaseTryAgainLater,
-  timeout: t.theSpeechServiceTookTooLongPleaseTryAgain,
+  origin: t.requestBlocked,
+  disabled: t.transcriptionUnavailable,
+  daily_cap: t.transcriptionDailyLimit,
+  no_speech: t.noSpeech,
+  invalid_audio: t.recordingFormatUnsupported,
+  duration_unverifiable: t.recordingLengthUnverified,
+  invalid_duration: t.recordingLengthInvalid,
+  too_large: t.recordingTooLarge,
+  rate_limited: t.speechBusy,
+  timeout: t.speechTimeout,
 };
   const [text, setText] = useState(initialTranscript ?? "");
   const [ready, setReady] = useState(initialTranscript !== null);
@@ -53,7 +53,7 @@ const REASONS: Record<string, string> = {
   }
   return <section aria-label={t.speechToText}>
     {sttEnabled ? <button type="button" className={cn(buttonSecondary, "mt-3")} disabled={!audio || busy || pending} onClick={transcribe}>{busy ? phase : t.transcribeRecording}</button> : null}
-    {sttEnabled && audioStorageEnabled ? <p className="mt-6 text-sm leading-6 text-ink-muted">{t.yourRecordingIsSavedWithYourAttemptSoYouCanListenToItAgainAndYouCanDeleteItAfterwards}
+    {sttEnabled && audioStorageEnabled ? <p className="mt-6 text-sm leading-6 text-ink-muted">{t.recordingSavedNotice}
       </p> : null}
     {phase && !busy ? <p role="status" aria-live="polite" className="mt-3 text-sm text-ink-soft">{phase}</p> : null}
     {ready && <div className="mt-4">
@@ -61,7 +61,7 @@ const REASONS: Record<string, string> = {
       </label>
       <button type="button" className={cn(buttonPrimary, "mt-4 w-full sm:w-auto")} disabled={busy || pending || !text.trim()} onClick={() => startTransition(async () => {
         const result = await confirmSpeakingTranscript(promptId, text);
-        if (result.error) setPhase(t.failedToConfirmPleaseReviewAndTryAgain);
+        if (result.error) setPhase(t.confirmationFailed);
       })}>{pending ? t.confirming : t.confirmAndSubmit}</button>
     </div>}
   </section>;

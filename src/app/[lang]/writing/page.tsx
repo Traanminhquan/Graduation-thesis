@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: t.writing,
   description:
-    t.writingPracticeWithGuidedTopicsALiveWordCounterAndAnAutomaticBasicCheckOfLengthSentencesAndRepeatedWords,
+    t.overview,
   };
 }
 
@@ -50,7 +50,7 @@ async function PromptList() {
     return (
       <PracticeListEmpty
         title={t.noWritingTopicsYet}
-        body={t.writingTopicsHaveNotBeenPublishedForThisBuild}
+        body={t.topicsUnavailable}
       />
     );
   }

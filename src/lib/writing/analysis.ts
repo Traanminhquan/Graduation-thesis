@@ -5,7 +5,7 @@ import { writingMessages } from "@/i18n/messages/writing";
  *
  * Everything here is pure: no database, no network, no AI/LLM call. The same
  * functions run in the browser (live word counter), in the Server Action (the
- * stored word count) and in `scripts/check-writing-analysis.ts`, so the number
+ * stored word count) and in `scripts/checks/check-writing-analysis.ts`, so the number
  * the learner sees while typing is exactly the number that gets saved.
  *
  * The checks are intentionally shallow and honest:

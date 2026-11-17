@@ -10,7 +10,7 @@ import type { PrismaClient } from "@prisma/client";
  * answer it correctly in a later attempt.
  *
  * Read-only: one ownership-scoped SELECT. The pure functions are exercised by
- * `scripts/check-vocabulary.ts` without a database.
+ * `scripts/checks/check-vocabulary.ts` without a database.
  */
 
 export const VOCABULARY_LIMITS = {

@@ -202,10 +202,10 @@ export function WritingEditor({
             ) : null}
           </div>
 
-          {tooLong ? <p className={alertError}>{t.tooLongShortenItBeforeSubmitting}
+          {tooLong ? <p className={alertError}>{t.shortenResponse}
       </p> : null}
           {state.error ? <p role="alert" className={alertError}>{state.error}</p> : null}
-          {draft.error === "conflict" && !remote ? <p className="text-sm text-ink-soft">{t.thisResponseWasSubmittedOrChangedElsewhereReloadThisPageYourTextIsBackedUpOnThisDevice}
+          {draft.error === "conflict" && !remote ? <p className="text-sm text-ink-soft">{t.responseConflict}
       </p> : null}
 
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">

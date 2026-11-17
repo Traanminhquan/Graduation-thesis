@@ -1,12 +1,6 @@
 import { INTL_LOCALE, type Locale } from "@/i18n/config";
 import { writingMessages } from "@/i18n/messages/writing";
 
-/** Existing English labels remain available to consumers outside this module. */
-export const DIFFICULTY_LABEL: Record<"BEGINNER" | "INTERMEDIATE" | "ADVANCED", string> = {
-  BEGINNER: "Beginner",
-  INTERMEDIATE: "Intermediate",
-  ADVANCED: "Advanced",
-};
 
 /** Human description of a prompt's word range. */
 export function wordTargetLabel(

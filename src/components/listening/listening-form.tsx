@@ -8,10 +8,7 @@ import { startTransition, useActionState, useState } from "react";
 import type { SubmitListeningState } from "@/app/[lang]/listening/actions";
 import { QuestionShell, SubmitBar } from "@/components/question-shell";
 import type { ListeningQuestionView } from "@/lib/listening/data";
-import {
-  isChoiceQuestion,
-  type MatchingPair,
-} from "@/lib/listening/scoring";
+import { isChoiceQuestion } from "@/lib/listening/scoring";
 import { choiceInput, choiceRow, field } from "@/lib/ui";
 
 type ListeningFormProps = {
@@ -37,7 +34,7 @@ export function ListeningForm({ action, questions }: ListeningFormProps) {
 
   const answered = questions.filter((question) => {
     if (question.type === "MATCHING") {
-      return question.matchingPairs.every((_, index) =>
+      return question.matchingLefts.every((_, index) =>
         Boolean(answers[`m_${question.id}_${index}`]),
       );
     }
@@ -187,20 +184,20 @@ function MatchingRows({ question, answers, onAnswer }: QuestionProps) {
   const t = useMessages(listeningMessages);
   // Every right-hand option, in a stable order, so it is usable both as a
   // server render and as a hydrated client render.
-  const rights = matchingOptions(question.matchingPairs);
+  const rights = question.matchingOptions;
 
   return (
     <div className="space-y-2">
-      {question.matchingPairs.map((pair, index) => {
+      {question.matchingLefts.map((left, index) => {
         const name = `m_${question.id}_${index}`;
         return (
           <div
-            key={pair.left}
+            key={left}
             className="grid gap-2 rounded-lg border border-line bg-surface px-4 py-3 sm:grid-cols-[1fr_1.2fr] sm:items-center"
           >
-            <span className="text-sm font-medium text-ink">{pair.left}</span>
+            <span className="text-sm font-medium text-ink">{left}</span>
             <label htmlFor={name} className="sr-only">
-              {t.match(pair.left)}
+              {t.match(left)}
             </label>
             <select
               id={name}
@@ -224,9 +221,4 @@ function MatchingRows({ question, answers, onAnswer }: QuestionProps) {
       })}
     </div>
   );
-}
-
-/** Unique right-hand values for the selects, in a deterministic order. */
-function matchingOptions(pairs: MatchingPair[]): string[] {
-  return [...new Set(pairs.map((pair) => pair.right))].sort();
 }

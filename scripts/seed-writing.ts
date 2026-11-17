@@ -4,7 +4,7 @@
  *   node --env-file=.env --import tsx scripts/seed-writing.ts --apply
  *
  * SAFETY GATE: without `--apply` the script only prints what it would upsert
- * and exits without opening a database connection. Seeding needs Tech Lead
+ * and exits without opening a database connection. Seeding needs explicit
  * approval, so the default run is a dry run.
  *
  * Idempotent: every prompt has a deterministic id and is upserted, so running

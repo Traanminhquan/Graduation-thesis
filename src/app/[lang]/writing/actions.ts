@@ -4,6 +4,7 @@ import { getRequestLocale } from "@/i18n/request";
 
 import { redirect } from "next/navigation";
 
+import { authRateLimiter, SUBMISSION_RULE, limitMessage } from "@/lib/auth/rate-limit";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { submitWritingForUser } from "@/lib/writing/submit";
 
@@ -28,9 +29,13 @@ export async function submitWritingResponse(
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
+  const locale = await getRequestLocale();
+  const decision = authRateLimiter.consume(`submission:writing:${user.id}`, SUBMISSION_RULE);
+  if (!decision.ok) return { error: limitMessage(decision, locale) };
+
   const raw = formData.get("text");
   const result = await submitWritingForUser({
-    locale: await getRequestLocale(),
+    locale,
     userId: user.id,
     promptId,
     text: typeof raw === "string" ? raw : "",

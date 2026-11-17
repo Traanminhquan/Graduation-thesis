@@ -57,7 +57,7 @@ Never commit `.env`.
 ```bash
 npm run typecheck
 npm run lint
-npm test          # every scripts/check-*.ts: offline, no database, no provider
+npm test          # every scripts/checks/check-*.ts: offline, no database, no provider
 npm run build
 ```
 

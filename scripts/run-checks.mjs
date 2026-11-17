@@ -1,5 +1,5 @@
 /**
- * Runs every offline check script (scripts/check-*.ts) and reports a summary.
+ * Runs every offline check script (scripts/checks/check-*.ts) and reports a summary.
  *
  *   npm test                 run all
  *   npm test -- weakness     run the scripts whose name contains "weakness"
@@ -13,8 +13,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+const checks = path.join(here, "checks");
 const filters = process.argv.slice(2);
-const scripts = readdirSync(here)
+const scripts = readdirSync(checks)
   .filter((name) => /^check-.*\.ts$/.test(name))
   .filter((name) => filters.length === 0 || filters.some((filter) => name.includes(filter)))
   .sort();
@@ -30,7 +31,7 @@ const failed = [];
 
 for (const script of scripts) {
   const started = Date.now();
-  const result = spawnSync(process.execPath, [tsx, path.join(here, script)], { env, encoding: "utf8" });
+  const result = spawnSync(process.execPath, [tsx, path.join(checks, script)], { env, encoding: "utf8" });
   const seconds = ((Date.now() - started) / 1000).toFixed(1);
   if (result.status === 0) {
     console.log(`ok    ${script} (${seconds}s)`);

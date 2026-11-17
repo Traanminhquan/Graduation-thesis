@@ -84,16 +84,16 @@ function microphoneErrorMessage(error: unknown, t: typeof speakingMessages.en): 
   switch (name) {
     case "NotAllowedError":
     case "SecurityError":
-      return t.microphoneAccessWasBlockedAllowTheMicrophoneForThisSiteInYourBrowserSettingsThenTryAgain;
+      return t.microphoneBlocked;
     case "NotFoundError":
     case "OverconstrainedError":
-      return t.noMicrophoneWasFoundConnectAMicrophoneOrCheckYourSystemInputDeviceAndTryAgain;
+      return t.microphoneMissing;
     case "NotReadableError":
-      return t.theMicrophoneIsAlreadyInUseByAnotherAppCloseThatAppAndTryAgain;
+      return t.microphoneBusy;
     case "AbortError":
-      return t.theMicrophoneStoppedUnexpectedlyTryRecordingAgain;
+      return t.microphoneStopped;
     default:
-      return t.theMicrophoneCouldNotBeStartedCheckYourBrowserPermissionsAndTryAgain;
+      return t.microphoneStartFailed;
   }
 }
 
@@ -206,15 +206,15 @@ export function SpeakingRecorder({
       recorder.stop();
     } catch {
       teardown();
-      setError(t.theRecordingCouldNotBeStoppedCleanlyTryAgain);
+      setError(t.recordingStopFailed);
       setStatus("error");
     }
-  }, [clearTimer, maxDurationMs, teardown, t.theRecordingCouldNotBeStoppedCleanlyTryAgain]);
+  }, [clearTimer, maxDurationMs, teardown, t.recordingStopFailed]);
 
   const startRecording = useCallback(async () => {
     if (!supportsRecording()) {
       setError(
-        t.thisBrowserCannotRecordAudioUseARecentVersionOfChromeEdgeFirefoxOrSafari,
+        t.recordingUnsupported,
       );
       setStatus("error");
       return;
@@ -261,7 +261,7 @@ export function SpeakingRecorder({
       } catch {
         teardown();
         setError(
-          t.thisBrowserCouldNotStartARecorderForYourMicrophoneTryADifferentBrowser,
+          t.recorderStartFailed,
         );
         setStatus("error");
         return;
@@ -281,7 +281,7 @@ export function SpeakingRecorder({
       stopStream();
       recorderRef.current = null;
       chunksRef.current = [];
-      setError(t.theBrowserStoppedRecordingUnexpectedlyTryAgain);
+      setError(t.recordingInterrupted);
       setStatus("error");
     };
 
@@ -302,7 +302,7 @@ export function SpeakingRecorder({
         setDurationMs(0);
         setElapsedMs(0);
         setError(
-          t.nothingWasCapturedCheckThatTheRightMicrophoneIsSelectedAndTryAgain,
+          t.recordingEmpty,
         );
         setStatus("error");
         return;
@@ -319,7 +319,7 @@ export function SpeakingRecorder({
       recorder.start(250);
     } catch {
       teardown();
-      setError(t.theRecordingCouldNotBeStartedTryAgain);
+      setError(t.recordingStartFailed);
       setStatus("error");
       return;
     }
@@ -449,7 +449,7 @@ export function SpeakingRecorder({
             aria-label={t.playBackYourRecording}
             className="mt-5 w-full"
           >
-            {t.yourBrowserCannotPlayThisRecordingTryADifferentBrowser}</audio>
+            {t.playbackUnsupported}</audio>
         ) : null}
 
         {hasRecording || status === "error" ? (
@@ -502,7 +502,7 @@ export function SpeakingRecorder({
                 rows={5}
                 maxLength={MAX_TRANSCRIPT_CHARACTERS}
                 aria-describedby={transcriptCountId}
-                placeholder={t.typeYourAnswerAsYouSaidIt}
+                placeholder={t.transcriptInstruction}
                 className={cn(field, readingText, "mt-1.5 resize-y")}
               />
             </div>

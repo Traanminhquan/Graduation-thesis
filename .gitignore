@@ -44,7 +44,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# explicit exclusions (tech lead requirement)
+# explicit exclusions
 node_modules/
 .next/
 .env
@@ -59,3 +59,7 @@ dist/
 service-account*.json
 
 /logs/
+
+# Playwright
+/test-results/
+/playwright-report/

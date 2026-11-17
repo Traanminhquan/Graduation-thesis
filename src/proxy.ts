@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { SESSION_COOKIE, verifySessionToken } from "./lib/auth/session";
+import { unprefixedPath } from "./lib/locale-path";
 
 /**
  * Route protection, Next.js 16 `proxy` convention (formerly middleware).
@@ -24,6 +25,13 @@ const AUTH_PAGES = ["/login", "/register"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const canonicalPath = unprefixedPath(pathname);
+  if (canonicalPath !== null) {
+    const canonicalUrl = request.nextUrl.clone();
+    canonicalUrl.pathname = canonicalPath;
+    return NextResponse.redirect(canonicalUrl, 308);
+  }
+
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const session = verifySessionToken(token);
 
@@ -52,6 +60,8 @@ export const config = {
   // Redirected auth prefetches keep their segment header and 404 under /profile.
   // Use matcher `missing`: the proxy cannot see next-router-prefetch (stripped by Next).
   matcher: [
+    "/vi/:path*",
+    "/en/:path*",
     "/profile/:path*",
     "/reading/:path*",
     "/listening/:path*",

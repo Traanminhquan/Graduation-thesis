@@ -1,0 +1,452 @@
+{
+  "seed-listening-1": {
+    "transcriptSha256": "de3f5ba2aac1a87cc533c4db748256460cacad5c07dddbcc8b58bd826be471a9",
+    "durationMs": 32155,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 479,
+    "bytes": 193248
+  },
+  "seed-listening-2": {
+    "transcriptSha256": "6cec6b4b5a0f4eacf9ed457866b13a418b56ed642dc9099465a4f7d629b59cea",
+    "durationMs": 34060,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 557,
+    "bytes": 204768
+  },
+  "seed-listening-3": {
+    "transcriptSha256": "944ffe067a2bf6e8ba232e5ad19ebc5064cde0e58b4b1af3f8055a88818d4bb7",
+    "durationMs": 74065,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 984,
+    "bytes": 444816
+  },
+  "seed-listening-4": {
+    "transcriptSha256": "94a62d2a8d14fe09bd7e51deedafd99dab5b54ebf51c725a2d4e142379d90ad7",
+    "durationMs": 76720,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1156,
+    "bytes": 460656
+  },
+  "seed-listening-5": {
+    "transcriptSha256": "4b55be0ae3143e36e5b433834c98767733c4d7a980630cf69f324bcc13921d61",
+    "durationMs": 87475,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1288,
+    "bytes": 525168
+  },
+  "seed-listening-6": {
+    "transcriptSha256": "317ab68e29f3553a58219e11a59c6abf45f09af8c5fdd0eb18dc506cbd2fca3d",
+    "durationMs": 74970,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1247,
+    "bytes": 450144
+  },
+  "seed-listening-7": {
+    "transcriptSha256": "28aef999efc7950287a8962011fe2d6204866200a9f800a96954ed22430abae0",
+    "durationMs": 53990,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 839,
+    "bytes": 324288
+  },
+  "seed-listening-8": {
+    "transcriptSha256": "ff5550c03bb8ee5bc8d411007da2c84640a28465623c7dd5786d4d632873bdb3",
+    "durationMs": 88865,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 883,
+    "bytes": 533520
+  },
+  "seed-listening-9": {
+    "transcriptSha256": "c43d354a34fd55d1b2bf75253f4d64d1986cebdc50f58038adaa2180846420e9",
+    "durationMs": 54765,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 983,
+    "bytes": 328896
+  },
+  "seed-listening-10": {
+    "transcriptSha256": "fd61159dcd86add12da3d85e6747a96b10cfc04c04879547a06bce7c1886c3e2",
+    "durationMs": 61240,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1011,
+    "bytes": 367776
+  },
+  "seed-listening-11": {
+    "transcriptSha256": "e4e448be7a425124427a871b481a059f3c9ee6e77e0d78083900af861f230fbf",
+    "durationMs": 78295,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1253,
+    "bytes": 470160
+  },
+  "seed-listening-12": {
+    "transcriptSha256": "ef7414d296035d944453d3677c09fb12e727f33476df7bca5dc89cd6d6742ee6",
+    "durationMs": 81995,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1260,
+    "bytes": 492336
+  },
+  "seed-listening-13": {
+    "transcriptSha256": "0cdc0356c26f562aff342089f370fcfecd5586bdcb81547c934c3545a678205e",
+    "durationMs": 65115,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 930,
+    "bytes": 391104
+  },
+  "seed-listening-14": {
+    "transcriptSha256": "05e4b66e00bc555b431929540ca9614d8b70fd1de5c5014b6e325b24f658469b",
+    "durationMs": 55565,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 892,
+    "bytes": 333792
+  },
+  "seed-listening-15": {
+    "transcriptSha256": "5280f60d33ea5f690cd5dfc8651b5016f96996b44a69625aa28c10b98834890e",
+    "durationMs": 63585,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 880,
+    "bytes": 381888
+  },
+  "seed-listening-16": {
+    "transcriptSha256": "9db3e78743644da0bbe02cae4df22b6d1b324c7a5e1580f78873915bfe7197a7",
+    "durationMs": 62165,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 883,
+    "bytes": 373392
+  },
+  "seed-listening-17": {
+    "transcriptSha256": "1363abe7d9f53772876c70d0a220da5b9412e2cfb4b4de26067608706f317a8b",
+    "durationMs": 70415,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1069,
+    "bytes": 422784
+  },
+  "seed-listening-18": {
+    "transcriptSha256": "f4c33b38d8bc8263aeea601739311dc8cb0d1d23e856f53a7ba31212da4258ba",
+    "durationMs": 59065,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1029,
+    "bytes": 354816
+  },
+  "seed-listening-19": {
+    "transcriptSha256": "d1ac49f803a986d7887a8184c83fd08b231058f2191edc9f1bd716f56fbd6955",
+    "durationMs": 67015,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1075,
+    "bytes": 402480
+  },
+  "seed-listening-20": {
+    "transcriptSha256": "579c536fa64a4cc2bab8d159f52441a05ddc1c43416bf2871968e9a21fd9eb45",
+    "durationMs": 105695,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1087,
+    "bytes": 634464
+  },
+  "seed-listening-21": {
+    "transcriptSha256": "6bd3494ba82518ecb58f0f38feab66547bf051957bd091a5132dbb55ea223dc4",
+    "durationMs": 73445,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1299,
+    "bytes": 441072
+  },
+  "seed-listening-22": {
+    "transcriptSha256": "c6e2084eb3e2480ea37859cfbf49cd055dcb56dd0b9697012a83f8f879a2cf1a",
+    "durationMs": 75220,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1201,
+    "bytes": 451728
+  },
+  "seed-listening-23": {
+    "transcriptSha256": "5e8d7e0d78a14a7ac654708fe6df1b44c6726bce3cd2b55f365bcaf01eb9248c",
+    "durationMs": 83050,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1313,
+    "bytes": 498672
+  },
+  "seed-listening-24": {
+    "transcriptSha256": "8f48fe6e38fe49043ba7fad9c648c3b901231a5aa5d45bc5573c9e463a631db3",
+    "durationMs": 88925,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1382,
+    "bytes": 533952
+  },
+  "seed-listening-25": {
+    "transcriptSha256": "856c461ef4d4efb60ed3ebe0361bc338d52c97f0cc243a27d92d4d9154decce1",
+    "durationMs": 40980,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 562,
+    "bytes": 246240
+  },
+  "seed-listening-26": {
+    "transcriptSha256": "f96817ef22b2dc327f9b23952e903843e2586f9112faa474eb24e6c27b34c7f3",
+    "durationMs": 33355,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 503,
+    "bytes": 200448
+  },
+  "seed-listening-27": {
+    "transcriptSha256": "995e247e097ce1839ed3296d510cbe81284282780bbe08d63a0cc7cdc6c19749",
+    "durationMs": 63110,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 848,
+    "bytes": 379008
+  },
+  "seed-listening-28": {
+    "transcriptSha256": "2249357cc54b8318dd2cc37935fcbbb853daac22f9bf53439dd2ce67c360911f",
+    "durationMs": 56135,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 837,
+    "bytes": 337104
+  },
+  "seed-listening-29": {
+    "transcriptSha256": "a2838a40b3eac8671bf01bd52d5b15ce034533ec29d7ce3b605a17daebfe2df3",
+    "durationMs": 79145,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1172,
+    "bytes": 475200
+  },
+  "seed-listening-30": {
+    "transcriptSha256": "9b57a05e536cb8ab560e6420a819a08fc8dc07c605a25db10c25525dbad5245f",
+    "durationMs": 69570,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1201,
+    "bytes": 417744
+  },
+  "seed-listening-31": {
+    "transcriptSha256": "c7447c105121d2bc12adf33694dec82a82c431898abb743be396795990e0e5f8",
+    "durationMs": 106680,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1653,
+    "bytes": 640368
+  },
+  "seed-listening-32": {
+    "transcriptSha256": "c349b32a22a704e8a0fee2ac77e048f25bd6ce55d7b61b33b3eab8962a529c07",
+    "durationMs": 160880,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1643,
+    "bytes": 965664
+  },
+  "seed-listening-33": {
+    "transcriptSha256": "053ed3b21f34e28accaf1b37f6657b15a5635d721d0c7b9046b3d5b1a4b34bf7",
+    "durationMs": 111065,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1879,
+    "bytes": 666720
+  },
+  "seed-listening-34": {
+    "transcriptSha256": "53f4db7025efa34c6d9f701efa725b53163da892c9a28a986b3af707de5a54f2",
+    "durationMs": 37810,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 560,
+    "bytes": 227232
+  },
+  "seed-listening-35": {
+    "transcriptSha256": "ac7c670b4e61720d10bb27418c323c3370d1c7fca7c480df835d0d7274eb010a",
+    "durationMs": 38830,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 578,
+    "bytes": 233280
+  },
+  "seed-listening-36": {
+    "transcriptSha256": "eeb4c0519d05113106cb63a1dd48b4a7925fdb08b63ebe2e309f8660737e40a6",
+    "durationMs": 56415,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 872,
+    "bytes": 338832
+  },
+  "seed-listening-37": {
+    "transcriptSha256": "5444b414c03b0d6aa62d61275ef733dba14cca9fc3bd16324567b9189544e7ca",
+    "durationMs": 58465,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 827,
+    "bytes": 351216
+  },
+  "seed-listening-38": {
+    "transcriptSha256": "99ffdaa5613e0e4161d3f859e82cb1c0f9b3044d36b915ab6385164ab74fd026",
+    "durationMs": 69770,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1183,
+    "bytes": 419040
+  },
+  "seed-listening-39": {
+    "transcriptSha256": "1d925fbb4808ad0e253fc7e7df2a695de780aad8a41ba23a13072d45ab0d0d73",
+    "durationMs": 83195,
+    "voice": "am_michael",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1184,
+    "bytes": 499536
+  },
+  "seed-listening-40": {
+    "transcriptSha256": "1681d88cc399f8258a5e69acfa8de669273717824119ee532ae6d8af05bc77d6",
+    "durationMs": 107480,
+    "voice": "af_bella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1597,
+    "bytes": 645264
+  },
+  "seed-listening-41": {
+    "transcriptSha256": "d25b19f9b2d5d37542297594341699dda5a05e382e6297203066d6e0e26cf4c2",
+    "durationMs": 113785,
+    "voice": "bm_lewis",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1680,
+    "bytes": 683136
+  },
+  "seed-listening-42": {
+    "transcriptSha256": "63d36aa222d5b9bfb22c2222a5bb455f9c5674d30357573c8385c8d5cb6f125b",
+    "durationMs": 113185,
+    "voice": "bf_isabella",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1834,
+    "bytes": 679536
+  },
+  "seed-listening-43": {
+    "transcriptSha256": "1fa7a2eb3cf14b5d76916ad693bebbc5430bef40b0e0dfea766a0e23989e9200",
+    "durationMs": 35130,
+    "voice": "am_fenrir",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 520,
+    "bytes": 211104
+  },
+  "seed-listening-44": {
+    "transcriptSha256": "c67cb6be7c2328c9e671515c68d40b49049c44a9fd0d313d3947ca10cef42e1a",
+    "durationMs": 61405,
+    "voice": "af_nicole",
+    "engine": "kokoro",
+    "speed": 0.85,
+    "characters": 565,
+    "bytes": 368784
+  },
+  "seed-listening-45": {
+    "transcriptSha256": "778c0b9e170d5e6f033671e8530690c201fcacd0d1a7f12b690551963003c107",
+    "durationMs": 49665,
+    "voice": "bm_fable",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 869,
+    "bytes": 298368
+  },
+  "seed-listening-46": {
+    "transcriptSha256": "7876fab25a8aa1d048e09f2926a3b695de027a8143141c670fe1c4d2b52271f8",
+    "durationMs": 60315,
+    "voice": "bf_alice",
+    "engine": "kokoro",
+    "speed": 0.92,
+    "characters": 968,
+    "bytes": 362304
+  },
+  "seed-listening-47": {
+    "transcriptSha256": "0c85bf14ffb678490d158e9ac21adedbc1a5e795d29da19776eb477c473fe7fa",
+    "durationMs": 73445,
+    "voice": "am_puck",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1192,
+    "bytes": 441072
+  },
+  "seed-listening-48": {
+    "transcriptSha256": "b8cd170c08c06477aa0c81e9d3b74b764e0a11af6962d2b5114a1739f0b312f2",
+    "durationMs": 73295,
+    "voice": "af_heart",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1169,
+    "bytes": 440064
+  },
+  "seed-listening-49": {
+    "transcriptSha256": "97bcc99df333f82547ff66c328c6832c6ace3174918fe2a81e43513862882368",
+    "durationMs": 112530,
+    "voice": "bm_george",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1628,
+    "bytes": 675504
+  },
+  "seed-listening-50": {
+    "transcriptSha256": "425a9addf6a6f8f0682cfc43db3efdab0e86a81413bc9cccd1812cefde0c081e",
+    "durationMs": 111610,
+    "voice": "bf_emma",
+    "engine": "kokoro",
+    "speed": 1,
+    "characters": 1825,
+    "bytes": 670032
+  }
+}

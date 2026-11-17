@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/db";
 import {
   parseMatchingPairs,
   toStringArray,
@@ -37,9 +36,34 @@ export type ListeningQuestionView = {
   prompt: string;
   /** Choice list for MULTIPLE_CHOICE; empty for the other types. */
   options: string[];
-  /** Rows for MATCHING; empty for the other types. */
-  matchingPairs: MatchingPair[];
+  /** Left labels in pair order; empty for non-MATCHING questions. */
+  matchingLefts: string[];
+  /** Distinct right labels in deterministic sorted order, without pairings. */
+  matchingOptions: string[];
 };
+
+/** Explicit browser projection: never spread answer-bearing database rows. */
+export function toListeningQuestionView(question: {
+  id: string;
+  order: number;
+  type: ListeningQuestionKind;
+  prompt: string;
+  options: unknown;
+  matchingPairs: unknown;
+}): ListeningQuestionView {
+  const pairs = question.type === "MATCHING"
+    ? parseMatchingPairs(question.matchingPairs)
+    : [];
+  return {
+    id: question.id,
+    order: question.order,
+    type: question.type,
+    prompt: question.prompt,
+    options: question.type === "MULTIPLE_CHOICE" ? toStringArray(question.options) : [],
+    matchingLefts: pairs.map((pair) => pair.left),
+    matchingOptions: [...new Set(pairs.map((pair) => pair.right))].sort(),
+  };
+}
 
 export type ListeningLessonDetail = {
   id: string;
@@ -57,6 +81,7 @@ export type ListeningLessonDetail = {
 export async function listListeningLessons(
   userId: string,
 ): Promise<ListeningLessonSummary[]> {
+  const { prisma } = await import("@/lib/db");
   // Sequential on purpose: the Supabase pooler accepts one client connection, so parallel Prisma reads fail with P1001.
   const lessons = await prisma.listeningLesson.findMany({
     select: {
@@ -116,6 +141,7 @@ export async function listListeningLessons(
 export async function getListeningLesson(
   lessonId: string,
 ): Promise<ListeningLessonDetail | null> {
+  const { prisma } = await import("@/lib/db");
   const lesson = await prisma.listeningLesson.findUnique({
     where: { id: lessonId },
     select: {
@@ -143,16 +169,7 @@ export async function getListeningLesson(
 
   if (!lesson) return null;
 
-  const questions: ListeningQuestionView[] = lesson.questions.map((question) => ({
-    id: question.id,
-    order: question.order,
-    type: question.type,
-    prompt: question.prompt,
-    options:
-      question.type === "MULTIPLE_CHOICE" ? toStringArray(question.options) : [],
-    matchingPairs:
-      question.type === "MATCHING" ? parseMatchingPairs(question.matchingPairs) : [],
-  }));
+  const questions = lesson.questions.map(toListeningQuestionView);
 
   return {
     id: lesson.id,
@@ -204,6 +221,7 @@ export async function getListeningAttemptForUser(
   attemptId: string,
   userId: string,
 ): Promise<ListeningAttemptReview | null> {
+  const { prisma } = await import("@/lib/db");
   const attempt = await prisma.listeningAttempt.findFirst({
     where: { id: attemptId, userId },
     select: {
@@ -264,6 +282,7 @@ export async function getListeningAttemptForUser(
 
 /** Read-only retry context; absent or unanswered rows count as missed. */
 export async function getListeningRetryForUser(attemptId: string, userId: string, lessonId: string) {
+  const { prisma } = await import("@/lib/db");
   const attempt = await prisma.listeningAttempt.findFirst({
     where: { id: attemptId, userId, lessonId },
     include: { answers: true, lesson: { include: { questions: { orderBy: { order: "asc" } } } } },

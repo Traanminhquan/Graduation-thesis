@@ -2,6 +2,8 @@ import { defineMessages } from "../config";
 
 export const authMessages = defineMessages({
   en: {
+    requestBlocked: "This request was blocked. Reload the page and try again.",
+    bodyTooLarge: "The request is too large.",
     email: "Email",
     password: "Password",
     name: "Name",
@@ -43,6 +45,8 @@ export const authMessages = defineMessages({
     tooMany: (n: number) => `Too many attempts. Try again in ${n} minute${n === 1 ? "" : "s"}.`,
   },
   vi: {
+    requestBlocked: "Yêu cầu đã bị chặn. Hãy tải lại trang rồi thử lại.",
+    bodyTooLarge: "Nội dung yêu cầu quá lớn.",
     email: "Email",
     password: "Mật khẩu",
     name: "Tên",

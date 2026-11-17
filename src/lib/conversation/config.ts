@@ -1,7 +1,7 @@
 /**
  * Conversation with AI: the switch, the limits and the prices in one place.
  *
- * The ceilings are part of the design (docs/specs/conversation-with-ai.md).
+ * The ceilings are part of the design.
  * A setting may only lower a ceiling; a blank setting means the default; an
  * invalid setting switches the feature off instead of guessing.
  */

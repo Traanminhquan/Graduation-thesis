@@ -1,3 +1,5 @@
+import { checkSameOrigin } from "@/lib/http/same-origin";
+import { readJsonBody } from "@/lib/http/json-body";
 import { authMessages } from "@/i18n/messages/auth";
 import { getRequestLocale } from "@/i18n/request";
 
@@ -23,6 +25,9 @@ import { prisma } from "@/lib/db";
 export async function POST(request: Request) {
   const locale = await getRequestLocale();
   const t = authMessages[locale];
+  if (!checkSameOrigin(request, process.env)) {
+    return NextResponse.json({ error: t.requestBlocked }, { status: 403 });
+  }
   // Checked before any parsing or bcrypt work.
   const addressLimit = authRateLimiter.consume(
     `register:address:${clientAddress(request)}`,
@@ -30,12 +35,14 @@ export async function POST(request: Request) {
   );
   if (!addressLimit.ok) return tooManyRequests(addressLimit, locale);
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: t.jsonBody }, { status: 400 });
+  const result = await readJsonBody(request);
+  if (!result.ok) {
+    return NextResponse.json(
+      { error: result.reason === "too_large" ? t.bodyTooLarge : t.jsonBody },
+      { status: result.reason === "too_large" ? 413 : 400 },
+    );
   }
+  const body = result.value;
 
   if (!isPlainObject(body)) {
     return NextResponse.json({ error: t.jsonObject }, { status: 400 });

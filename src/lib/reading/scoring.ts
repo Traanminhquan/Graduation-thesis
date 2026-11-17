@@ -94,20 +94,8 @@ export function isAnswerCorrect(
 }
 
 /** Human label for a question type badge. */
-export const QUESTION_TYPE_LABEL: Record<ReadingQuestionKind, string> = {
-  MULTIPLE_CHOICE: "Multiple choice",
-  TRUE_FALSE: "True / false",
-  FILL_BLANK: "Fill in the blank",
-  MAIN_IDEA: "Main idea",
-  VOCAB_IN_CONTEXT: "Vocabulary in context",
-};
 
 /** Human label for the seeded difficulty enum. */
-export const DIFFICULTY_LABEL: Record<"BEGINNER" | "INTERMEDIATE" | "ADVANCED", string> = {
-  BEGINNER: "Beginner",
-  INTERMEDIATE: "Intermediate",
-  ADVANCED: "Advanced",
-};
 
 /** Coerce a Prisma `Json?` column (options / acceptedAnswers) to string[]. */
 export function toStringArray(value: unknown): string[] {

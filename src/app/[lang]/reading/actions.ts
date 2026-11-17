@@ -4,6 +4,7 @@ import { getRequestLocale } from "@/i18n/request";
 
 import { redirect } from "next/navigation";
 
+import { authRateLimiter, ATTEMPT_RULE, limitMessage } from "@/lib/auth/rate-limit";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { submitReadingAttemptForUser } from "@/lib/reading/submit";
 
@@ -25,6 +26,10 @@ export async function submitReadingAttempt(
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
+  const locale = await getRequestLocale();
+  const decision = authRateLimiter.consume(`attempt:reading:${user.id}`, ATTEMPT_RULE);
+  if (!decision.ok) return { error: limitMessage(decision, locale) };
+
   const responses: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
     if (!key.startsWith("q_") || typeof value !== "string") continue;
@@ -32,7 +37,7 @@ export async function submitReadingAttempt(
   }
 
   const result = await submitReadingAttemptForUser({
-    locale: await getRequestLocale(),
+    locale,
     userId: user.id,
     lessonId,
     responses,

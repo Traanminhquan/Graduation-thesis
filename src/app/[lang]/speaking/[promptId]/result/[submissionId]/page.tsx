@@ -66,10 +66,10 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
   const { promptId, submissionId } = await params;
   const query = await searchParams;
   const failureMessage = query.ai === "limit"
-    ? t.youHaveReachedTodaySAIFeedbackLimitYourWorkIsSavedSoYouCanTryAgainTomorrow
+    ? t.dailyLimit
     : query.ai === "busy"
-      ? t.theAIServiceIsBusyOrTookTooLongYourWorkIsSavedSoYouCanTryAgainInAMoment
-      : query.ai === "unavailable" ? t.aIContentFeedbackIsUnavailableYourTranscriptIsSavedSoYouCanTryAgainLater : null;
+      ? t.aiBusy
+      : query.ai === "unavailable" ? t.feedbackUnavailable : null;
   const user = await requireUser();
 
   // Scoped to the signed-in user: another learner's submission id resolves to
@@ -81,9 +81,9 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
   const source = transcriptSource(submission);
   const sourceLabel =
     source === "manual"
-      ? t.typedManuallyNotMachineVerified
+      ? t.manualTranscript
       : submission.transcript !== submission.rawTranscript
-        ? t.speechToTextEditedByYou
+        ? t.editedTranscript
         : t.speechToText;
   const submittedAt = formatSubmittedAt(submission.submittedAt, locale);
   const assessment = submission.assessment;
@@ -139,7 +139,7 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
           </div>
         ) : (
           <p className="mt-2 text-base leading-7 text-ink-soft">
-            {t.aIFeedbackIsTurnedOffForThisSiteYourTranscriptIsSavedBelow}
+            {t.feedbackDisabled}
       </p>
         )}
       </section>
@@ -162,7 +162,7 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
             </p>
           ) : (
             <p className="text-base text-ink-muted">
-              {t.noTranscriptWasSavedForThisAttempt}
+              {t.noTranscript}
       </p>
           )}
         </TextSheet>
@@ -192,8 +192,8 @@ async function ResultRunner({ params, searchParams }: ResultPageProps) {
 
       <p className="mt-6 text-sm leading-6 text-ink-muted">
         {isRecordingUrl(submission.audioUrl)
-          ? t.yourRecordingIsStoredWithThisAttemptAndOnlyYouCanPlayOrDeleteItLinguaAlsoKeepsThePromptTheDurationAndYourTranscript
-          : t.audioIsNotStoredLinguaKeepsThePromptTheDurationAndYourTranscript}
+          ? t.recordingPrivacy
+          : t.transcriptPrivacy}
       </p>
     </>
   );

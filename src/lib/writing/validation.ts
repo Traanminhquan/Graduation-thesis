@@ -3,7 +3,7 @@ import { writingMessages } from "@/i18n/messages/writing";
 /**
  * Server-side validation for a Writing submission.
  *
- * Pure, so `scripts/check-writing-analysis.ts` can exercise every rule without
+ * Pure, so `scripts/checks/check-writing-analysis.ts` can exercise every rule without
  * a database. The action calls this before touching Prisma; the database copy
  * of the prompt is the only thing that comes from outside.
  */

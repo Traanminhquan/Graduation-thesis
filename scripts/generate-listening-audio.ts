@@ -19,6 +19,7 @@
  * scripts/listening-audio-manifest.json. Existing files are skipped unless
  * --force. Nothing is written to the database.
  */
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -30,7 +31,7 @@ const KBPS = 48; // speech, mono
 const GAP_MS = 280; // silence between chunks
 const EDGE_MS = 250; // silence at the start and the end
 const OUT_DIR = path.join("public", "audio", "listening");
-const MANIFEST = path.join("scripts", "listening-audio-manifest.json");
+const MANIFEST = path.join("scripts", "content", "listening-audio-manifest.json");
 
 /** American and British voices in turn, women and men alternating. */
 const KOKORO_VOICES = [
@@ -41,7 +42,7 @@ const KOKORO_VOICES = [
 const KOKORO_SPEED: Record<string, number> = { A1: 0.85, A2: 0.92 };
 const GROQ_VOICES = ["hannah", "troy", "diana", "austin", "autumn", "daniel"] as const;
 
-type ManifestEntry = { durationMs: number; voice: string; engine: string; speed?: number; characters: number; bytes: number };
+type ManifestEntry = { transcriptSha256?: string; durationMs: number; voice: string; engine: string; speed?: number; characters: number; bytes: number };
 type Pcm = { samples: Int16Array; sampleRate: number };
 
 const args = process.argv.slice(2);
@@ -270,7 +271,7 @@ async function main() {
     const mp3 = await encodeMp3(samples, sampleRate);
     writeFileSync(file, mp3);
     const durationMs = Math.round((samples.length / sampleRate) * 1000);
-    manifest[lesson.id] = { durationMs, voice, engine, ...(speed ? { speed } : {}), characters: chars, bytes: mp3.length };
+    manifest[lesson.id] = { transcriptSha256: createHash("sha256").update(lesson.transcript).digest("hex"), durationMs, voice, engine, ...(speed ? { speed } : {}), characters: chars, bytes: mp3.length };
     writeFileSync(MANIFEST, `${JSON.stringify(Object.fromEntries(Object.entries(manifest).sort((a, b) => number(a[0]) - number(b[0]))), null, 2)}\n`);
     characters += chars;
     console.log(`  wrote ${file}: ${(durationMs / 1000).toFixed(1)} s, ${(mp3.length / 1024).toFixed(0)} KB`);

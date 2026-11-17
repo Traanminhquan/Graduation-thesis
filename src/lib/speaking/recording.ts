@@ -61,7 +61,7 @@ export function recordingHandlers(
     } catch { return new Response(null, { status: 404 }); }
   }
   async function DELETE(request: Request, context: Context) {
-    const { checkSameOrigin } = await import("./stt/http");
+    const { checkSameOrigin } = await import("../http/same-origin");
     if (!checkSameOrigin(request, env)) return Response.json({ ok: false }, { status: 403 });
     try {
       const user = await session();

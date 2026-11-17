@@ -10,7 +10,7 @@ import type { PrismaClient } from "@prisma/client";
  * - Read-only by construction: the only database access here is four `findMany`
  *   SELECTs. No insert/update/delete, no schema change, no migration.
  * - The pure functions at the top have no database dependency, so
- *   `scripts/check-progress-stats.ts` can exercise every edge case (zero
+ *   `scripts/checks/check-progress-stats.ts` can exercise every edge case (zero
  *   attempts, `maxScore = 0`, averaging) without touching Postgres.
  */
 

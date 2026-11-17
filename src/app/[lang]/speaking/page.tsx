@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
   title: t.speaking,
   description:
-    t.speakingPracticeWithShortTopicsInBrowserRecordingAndAConfirmedTranscriptFeedbackCoversWhatYouSaidNotPronunciation,
+    t.overview,
   };
 }
 
@@ -52,7 +52,7 @@ async function PromptList() {
     return (
       <PracticeListEmpty
         title={t.noSpeakingTopicsYet}
-        body={t.speakingTopicsHaveNotBeenPublishedForThisBuild}
+        body={t.topicsUnavailable}
       />
     );
   }

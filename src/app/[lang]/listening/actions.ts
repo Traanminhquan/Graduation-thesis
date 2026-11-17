@@ -4,6 +4,7 @@ import { getRequestLocale } from "@/i18n/request";
 
 import { redirect } from "next/navigation";
 
+import { authRateLimiter, ATTEMPT_RULE, limitMessage } from "@/lib/auth/rate-limit";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { submitListeningAttemptForUser } from "@/lib/listening/submit";
 
@@ -32,6 +33,10 @@ export async function submitListeningAttempt(
 ): Promise<SubmitListeningState> {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
+
+  const locale = await getRequestLocale();
+  const decision = authRateLimiter.consume(`attempt:listening:${user.id}`, ATTEMPT_RULE);
+  if (!decision.ok) return { error: limitMessage(decision, locale) };
 
   const responses: Record<string, string> = {};
   const matching = new Map<string, string[]>();
@@ -64,7 +69,7 @@ export async function submitListeningAttempt(
   }
 
   const result = await submitListeningAttemptForUser({
-    locale: await getRequestLocale(),
+    locale,
     userId: user.id,
     lessonId,
     responses,

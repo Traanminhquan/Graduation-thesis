@@ -2,7 +2,7 @@
  * Rule-based grading for the Listening module.
  *
  * Pure functions with no server or database imports, so the same rules run in
- * a Server Action, on the results page and in `scripts/check-listening-scoring.ts`.
+ * a Server Action, on the results page and in `scripts/checks/check-listening-scoring.ts`.
  * Every question has a stored canonical answer; there is no AI call.
  *
  * The four question types reduce to two rules:
@@ -224,22 +224,8 @@ export function isListeningAnswerCorrect(
 }
 
 /** Human label for a question type badge. */
-export const QUESTION_TYPE_LABEL: Record<ListeningQuestionKind, string> = {
-  MULTIPLE_CHOICE: "Multiple choice",
-  TRUE_FALSE: "True / false",
-  FILL_BLANK: "Fill in the blank",
-  MATCHING: "Matching",
-};
 
 /** Human label for the seeded difficulty enum. */
-export const DIFFICULTY_LABEL: Record<
-  "BEGINNER" | "INTERMEDIATE" | "ADVANCED",
-  string
-> = {
-  BEGINNER: "Beginner",
-  INTERMEDIATE: "Intermediate",
-  ADVANCED: "Advanced",
-};
 
 /**
  * `{ left, right }` rows of a stored mapping, in insertion order — used by the

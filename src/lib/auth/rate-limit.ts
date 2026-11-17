@@ -2,7 +2,7 @@ import { type Locale } from "@/i18n/config";
 import { authMessages } from "@/i18n/messages/auth";
 
 /**
- * In-memory sliding-window rate limiter for the auth endpoints.
+ * In-memory sliding-window rate limiter for auth and learning actions.
  *
  * Scope and limits (deliberate):
  * - State lives in this server process: it resets on restart and is not shared
@@ -24,6 +24,10 @@ export const LOGIN_EMAIL_FAILURE_RULE: RateLimitRule = { limit: 8, windowMs: 15 
 export const PASSWORD_CHANGE_FAILURE_RULE: RateLimitRule = { limit: 8, windowMs: 15 * MINUTE };
 export const PROFILE_UPDATE_RULE: RateLimitRule = { limit: 20, windowMs: 15 * MINUTE };
 export const REGISTER_ADDRESS_RULE: RateLimitRule = { limit: 30, windowMs: 60 * MINUTE };
+
+export const ATTEMPT_RULE: RateLimitRule = { limit: 30, windowMs: 10 * MINUTE };
+export const SUBMISSION_RULE: RateLimitRule = { limit: 20, windowMs: 60 * MINUTE };
+export const RETRY_RULE: RateLimitRule = { limit: 60, windowMs: 10 * MINUTE };
 
 /** Hard ceiling on tracked keys so forged addresses cannot grow memory without bound. */
 const MAX_KEYS = 10_000;
@@ -97,10 +101,13 @@ export function clientAddress(request: Request): string {
   return address.slice(0, 64);
 }
 
+export function limitMessage(decision: { retryAfterSeconds: number }, locale: Locale): string {
+  return authMessages[locale].tooMany(Math.ceil(decision.retryAfterSeconds / 60));
+}
+
 export function tooManyRequests(decision: { retryAfterSeconds: number }, locale: Locale = "en"): Response {
-  const minutes = Math.ceil(decision.retryAfterSeconds / 60);
   return Response.json(
-    { error: authMessages[locale].tooMany(minutes) },
+    { error: limitMessage(decision, locale) },
     { status: 429, headers: { "Retry-After": String(decision.retryAfterSeconds) } },
   );
 }

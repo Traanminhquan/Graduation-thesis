@@ -1,4 +1,4 @@
-import { checkSameOrigin } from "../speaking/stt/http";
+import { checkSameOrigin } from "../http/same-origin";
 import { conversationConfig } from "./config";
 import type { HintResult } from "./hint";
 

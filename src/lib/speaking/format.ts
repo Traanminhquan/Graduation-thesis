@@ -4,17 +4,9 @@ import { speakingMessages } from "@/i18n/messages/speaking";
  * Presentation helpers for the Speaking module.
  *
  * No DOM, no database and no network: every function is pure so it can be
- * unit-checked with `npx tsx scripts/check-speaking-helpers.ts`.
+ * unit-checked with `npx tsx scripts/checks/check-speaking-helpers.ts`.
  */
 
-export const DIFFICULTY_LABEL: Record<
-  "BEGINNER" | "INTERMEDIATE" | "ADVANCED",
-  string
-> = {
-  BEGINNER: "Beginner",
-  INTERMEDIATE: "Intermediate",
-  ADVANCED: "Advanced",
-};
 
 /**
  * Seconds -> `m:ss`. Used by the live timer, where whole seconds are enough.

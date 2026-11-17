@@ -41,7 +41,7 @@ export async function BasicCheck({
         {t.basicCheck}
       </h2>
       <p className="mt-1 text-base leading-7 text-ink-soft">
-        {t.lengthAndRepetitionOnlyGrammarAndIdeasAreNotJudgedHere}
+        {t.basicCheckDescription}
       </p>
 
       <div className={cn(sheet, "mt-3 p-6 sm:p-8")}>
@@ -68,7 +68,7 @@ export async function BasicCheck({
 
         <p className={cn("mt-6 text-base font-semibold", targetTone)}>
           {target.status === "none" ? (
-            <>{t.thisTopicHasNoWordTarget}</>
+            <>{t.noWordTarget}</>
           ) : target.status === "under" ? (
             <>{t.underCheck(target.wordsToMinimum, target.min)}</>
           ) : target.status === "over" ? (
@@ -81,7 +81,7 @@ export async function BasicCheck({
         {repeatedWords.length > 0 ? (
           <div className="mt-5 border-t border-line pt-5">
             <h3 className="font-sans text-base font-semibold text-ink">
-              {t.wordsUsedThreeOrMoreTimes}
+              {t.repeatedWords}
       </h3>
             <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-base text-ink">
               {repeatedWords.map(({ word, count }) => (
