@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { getWritingSubmissionForUser } from "../../src/lib/writing/data";
 import type { PrismaClient } from "@prisma/client";
 import { assessWritingForUser, type AssessmentDeps } from "../../src/lib/writing/assess";
+import { buildMessages, MAX_CORRECTIONS } from "../../src/lib/writing/prompt";
 import { ProviderError, deepSeekProvider, type Provider } from "../../src/lib/ai/provider";
 import type { Usage } from "../../src/lib/ai/cost";
 const mockEnv = (values: Record<string, string>): NodeJS.ProcessEnv => ({ NODE_ENV: "test", ...values });
@@ -52,6 +53,11 @@ async function run() {
     prompt: { title: "School", topic: null, difficulty: "A1", minWords: 1, maxWords: 100 }, assessment: summaryFixture.saved() }) } } as unknown as PrismaClient;
   assert.equal((await getWritingSubmissionForUser("s", "u", reviewDb))?.assessment?.summary, valid.summary.trim());
   const f = fixture(); assert.equal((await assessWritingForUser("s", "u", f.deps)).ok, true); assert.equal(f.saved()?.overallScore, 80); assert.equal(f.status(), "ASSESSED"); assert.equal(f.weakness(), 1); console.log("PASS valid response");
+  const many = fixture(response({ ...valid, corrections: Array.from({ length: 15 }, () => valid.corrections[0]) }));
+  assert.equal((await assessWritingForUser("s", "u", many.deps)).ok, true);
+  assert.equal((many.saved()?.corrections as unknown[]).length, MAX_CORRECTIONS);
+  assert.match(buildMessages({ finalText: learner, prompt: { promptText: "x" } })[0].content, new RegExp(`at most ${MAX_CORRECTIONS} `));
+  console.log("PASS corrections capped at MAX_CORRECTIONS (long essays stay under the output limit)");
   assert.equal((await assessWritingForUser("s", "u", f.deps)).ok, true); assert.equal(f.calls(), 1); console.log("PASS duplicate assessment (no second provider call)");
   for (const [name, value] of [["malformed JSON", "{"], ["missing fields", {}], ["out-of-range scores", { ...valid, grammarScore: 101 }]] as const) {
     const test = fixture(response(value)); assert.equal((await assessWritingForUser("s", "u", test.deps)).ok, false); assert.equal(test.calls(), 1); assert.equal(test.status(), "SUBMITTED"); assert.equal(test.saved(), null); console.log(`PASS ${name}`);

@@ -4,7 +4,7 @@ import { validateAssessment } from "../ai/schema";
 import { providerConfig, providerFromEnv, MAX_TOKENS, type Provider } from "../ai/provider";
 import { AssessmentFailure, classifyAssessmentFailure, formatAssessmentDiagnosis, sanitizeAssessmentDiagnosis, type AssessmentDiagnosis } from "../ai/diagnostics";
 import { dbLedger, prices, type Ledger } from "../ai/cost";
-import { buildMessages } from "./prompt";
+import { buildMessages, MAX_CORRECTIONS } from "./prompt";
 import { MAX_WRITING_CHARACTERS } from "./validation";
 export const DAILY_ASSESSMENT_CAP = 5;
 export type AssessmentDeps = { db: PrismaClient; provider: Provider; ledger: Ledger; env: NodeJS.ProcessEnv; now: () => Date };
@@ -50,7 +50,8 @@ export async function assessWritingForUser(submissionId: string, userId: string,
       if (error instanceof SyntaxError) { diag.jsonParse = "failed"; const capped = output.completionTokens >= MAX_TOKENS; throw new AssessmentFailure(capped ? "completion_truncated" : "invalid_json", capped ? "at_token_cap" : undefined); }
       diag.jsonParse = "ok"; diag.schemaValidation = "failed"; throw new AssessmentFailure("schema_validation_failed", error instanceof Error ? error.message : undefined);
     }
-    const assessment = { ...validated, summary: validated.summary.trim() };
+    // The prompt asks for at most MAX_CORRECTIONS; keep that bound even if the model sends more.
+    const assessment = { ...validated, corrections: validated.corrections.slice(0, MAX_CORRECTIONS), summary: validated.summary.trim() };
     // Safe to run twice: the transaction changes nothing once the assessment exists.
     const persist = () => db.$transaction(async tx => {
       if (await tx.writingAssessment.findUnique({ where: { submissionId } })) return;
